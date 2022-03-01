@@ -1,0 +1,29 @@
+{
+    "name": "koa-auto-transfer-header",
+    "version": "1.0.0",
+    "description": "auto transfer header in each http-request when server receive a request",
+    "main": "dist/index.js",
+    "scripts": {
+        "build": "tsc -w -p tsconfig.json",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "koa",
+        "transfer",
+        "trace"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/xuezier/koa-auto-transfer-header.git"
+    },
+    "author": "tunan <tunan@gaoding.com>",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/node": "^17.0.21",
+        "@typescript-eslint/eslint-plugin": "^5.13.0",
+        "@typescript-eslint/parser": "^5.13.0",
+        "eslint": "^8.10.0",
+        "tslib": "^2.3.1",
+        "typescript": "^4.6.2"
+    }
+}
