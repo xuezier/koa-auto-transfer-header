@@ -1,14 +1,15 @@
 import { AsyncLocalStorage } from "async_hooks";
 
-const asyncLocalStorage = new AsyncLocalStorage<any>();
+type StoreType = Map<string, string | string[]>;
+const asyncLocalStorage = new AsyncLocalStorage<StoreType>();
 export const storage = {
     enable(callback: () => any) {
-        asyncLocalStorage.run({} as any, callback);
+        asyncLocalStorage.run(new Map<string, string | string[]>(), callback);
     },
-    get(key: string | number | symbol) {
-        return asyncLocalStorage.getStore()[key];
+    get(key: string) {
+        return asyncLocalStorage.getStore()?.get(key);
     },
-    set(key: string| number | symbol, value: any) {
-        asyncLocalStorage.getStore()[key] = value;
+    set(key: string, value: string | string[]) {
+        asyncLocalStorage.getStore()?.set(key, value);
     }
 };

@@ -16,6 +16,9 @@
         "type": "git",
         "url": "https://github.com/xuezier/koa-auto-transfer-header.git"
     },
+    "engines": {
+        "node": ">=12.17.0"
+    },
     "author": "tunan <tunan@gaoding.com>",
     "license": "MIT",
     "devDependencies": {

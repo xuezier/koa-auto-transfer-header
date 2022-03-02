@@ -2,7 +2,9 @@
 
 In a Koa server, when a client request is received and an external HTTP request is initiated in the request, the request header initiated by the client is automatically forwarded.
 
-Also used in a server start from a framework based on Koa.
+Also used in a server started from any Web Framework.
+
+Support all `http-client` lib based on `http` module.
 
 ## Installation
 
