@@ -2,6 +2,7 @@ import { AsyncLocalStorage } from "async_hooks";
 
 type StoreType = Map<string, string | string[]>;
 const asyncLocalStorage = new AsyncLocalStorage<StoreType>();
+
 export const storage = {
     enable(callback: () => any) {
         asyncLocalStorage.run(new Map<string, string | string[]>(), callback);

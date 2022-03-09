@@ -4,7 +4,7 @@ In a Koa server, when a client request is received and an external HTTP request 
 
 Also used in a server started from any Web Framework.
 
-Support all `http-client` lib based on `http` module.
+Support all `http-client` libs based on `http` module.
 
 ## Installation
 

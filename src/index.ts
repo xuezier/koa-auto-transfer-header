@@ -21,3 +21,5 @@ export function addTransferHeader(header: string) {
     if(!config.transferHeaders.includes(header))
         config.transferHeaders.push(header);
 }
+
+export * from './storage';
