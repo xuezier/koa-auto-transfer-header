@@ -24,9 +24,9 @@
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
         "inlineSourceMap": true,
-        "importHelpers": true,
+        "importHelpers": false,
         "rootDir": "src",
-        "outDir": "dist"
+        "outDir": "dist",
     },
     "exclude": [
         "dist*",
