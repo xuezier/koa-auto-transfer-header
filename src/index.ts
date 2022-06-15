@@ -22,4 +22,16 @@ export function addTransferHeader(header: string) {
         config.transferHeaders.push(header);
 }
 
+export class HeaderTransferHandle {
+    static disableTransferHeaders = disableTransferHeaders;
+
+    static setTransferHeaders = setTransferHeaders;
+
+    static addTransferHeader = addTransferHeader;
+
+    static requestHeaderHandle?: any;
+
+    static clientHeaderHandle?: any;
+}
+
 export * from './storage';

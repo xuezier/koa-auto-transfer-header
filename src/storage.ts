@@ -4,6 +4,9 @@ type StoreType = Map<string, string | string[]>;
 const asyncLocalStorage = new AsyncLocalStorage<StoreType>();
 
 export const storage = {
+    get store() {
+        return asyncLocalStorage.getStore();
+    },
     enable(callback: () => any) {
         asyncLocalStorage.run(new Map<string, string | string[]>(), callback);
     },
