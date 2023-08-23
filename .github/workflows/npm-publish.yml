@@ -19,16 +19,16 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16
-          registry-url: https://registry-npm.gaoding.com/
+          registry-url: https://registry.npmjs.org/
 
       - name: Install dependencies
         run: npm install
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.PRIVATE_NPM_ORG_TOKEN}}
 
       - name: Compile Code
         run: npm run build
       - name: Publish package
         run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.PRIVATE_NPM_ORG_TOKEN}}
