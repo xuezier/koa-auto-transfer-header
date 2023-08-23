@@ -1,6 +1,6 @@
 {
     "name": "koa-auto-transfer-header",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "auto transfer header in each http-request when server receive a request",
     "main": "dist/index.js",
     "scripts": {
