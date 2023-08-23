@@ -12,11 +12,7 @@ const httpCallback = function(callback: http.RequestListener)  {
                 return callback(req, res);
             else
                 storage.enable(function() {
-                    config.transferHeaders.map(headerKey => {
-                        const value = req.headers[headerKey];
-                        if(value)
-                            storage.set(headerKey, value);
-                    });
+                    storage.set(req.headers);
 
                     callback(req, res);
                 });
