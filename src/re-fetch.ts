@@ -3,7 +3,7 @@ import { storage } from "./storage";
 
 const globalFetch = global.fetch;
 
-Object.defineProperty(global, 'fetch', {
+Object.defineProperty(globalFetch, 'fetch', {
     value: async function (input: RequestInfo, init?: RequestInit) {
         if(config.enable) {
             if(!init)
@@ -20,5 +20,6 @@ Object.defineProperty(global, 'fetch', {
         }
 
         return globalFetch(input, init);
-    }
+    },
+    configurable: true,
 });
