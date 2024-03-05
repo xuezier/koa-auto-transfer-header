@@ -1,5 +1,6 @@
 import './re-http-server';
 import './re-https-server';
+import './re-fetch';
 
 import './http-request';
 import './https-request';
