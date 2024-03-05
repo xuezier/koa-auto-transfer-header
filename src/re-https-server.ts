@@ -9,8 +9,10 @@ const httpsCreateServer = https.createServer;
 const httpsCallback = function(callback: http.RequestListener)  {
     return (req: http.IncomingMessage, res: http.ServerResponse) => {
         if(config.enable)
-            if(storage.store)
+            if(storage.store) {
+                storage.set(req.headers);
                 return callback(req, res);
+            }
             else
                 storage.enable(function() {
                     storage.set(req.headers);
