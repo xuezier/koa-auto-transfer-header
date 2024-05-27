@@ -1,9 +1,11 @@
 import './re-http-server';
 import './re-https-server';
+import './re-http2-server';
 import './re-fetch';
 
 import './http-request';
 import './https-request';
+import './http2-request';
 
 import { config } from './config';
 import assert = require('assert');
