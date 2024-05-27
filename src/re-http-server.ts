@@ -33,5 +33,8 @@ Object.defineProperty(http, 'createServer', {
         }
 
         return httpCreateServer(options, httpCallback(<any>callback));
-    }
+    },
+    enumerable: true,
+    configurable: true,
+    writable: true,
 });

@@ -29,7 +29,10 @@ Object.defineProperty(http2, 'connect', {
                 const req = request.apply(session, [headers, options]);
 
                 return req;
-            }
+            },
+            enumerable: true,
+            configurable: true,
+            writable: true,
         });
     }
 });

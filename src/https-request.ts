@@ -19,4 +19,7 @@ Object.defineProperty(https, 'request', {
 
         return client;
     },
+    enumerable: true,
+    configurable: true,
+    writable: true,
 });

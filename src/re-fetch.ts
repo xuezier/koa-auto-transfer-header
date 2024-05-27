@@ -21,5 +21,7 @@ Object.defineProperty(global, 'fetch', {
 
         return globalFetch(input, init);
     },
+    enumerable: true,
     configurable: true,
+    writable: true,
 });
