@@ -34,5 +34,10 @@ Object.defineProperty(http2, 'connect', {
             configurable: true,
             writable: true,
         });
-    }
+
+        return session;
+    },
+    enumerable: true,
+    configurable: true,
+    writable: true,
 });
