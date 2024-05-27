@@ -3,7 +3,7 @@ import { storage } from "./storage";
 
 const globalFetch = global.fetch;
 
-Object.defineProperty(globalFetch, 'fetch', {
+Object.defineProperty(global, 'fetch', {
     value: async function (input: RequestInfo, init?: RequestInit) {
         if(config.enable) {
             if(!init)
