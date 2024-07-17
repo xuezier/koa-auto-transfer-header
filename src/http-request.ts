@@ -1,6 +1,6 @@
 import * as http from 'http';
 
-import { config } from './config';
+import { config, requestInterceptorArr } from './config';
 import { storage } from './storage';
 
 const httpRequest = http.request;
@@ -16,6 +16,10 @@ Object.defineProperty(http, 'request', {
                     client.setHeader(headerKey, value);
             });
 
+        for(const interceptor of requestInterceptorArr) {
+            if(typeof interceptor === 'function')
+                interceptor(client);
+        }
         return client;
     },
     enumerable: true,

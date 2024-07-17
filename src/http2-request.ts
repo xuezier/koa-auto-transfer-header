@@ -1,7 +1,7 @@
 import * as http2 from 'http2';
 import { Socket } from 'net';
 import { TLSSocket } from 'tls';
-import { config } from './config';
+import { config, requestInterceptorArr } from './config';
 import { storage } from './storage';
 
 const connect = http2.connect;
@@ -28,6 +28,10 @@ Object.defineProperty(http2, 'connect', {
 
                 const req = request.apply(session, [headers, options]);
 
+                for(const interceptor of requestInterceptorArr) {
+                    if(typeof interceptor === 'function')
+                        interceptor(req);
+                }
                 return req;
             },
             enumerable: true,

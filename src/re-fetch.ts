@@ -19,8 +19,8 @@ Object.defineProperty(global, 'fetch', {
             init.headers = headers;
 
             for(const interceptor of requestInterceptorArr) {
-                if(interceptor)
-                    await interceptor(init);
+                if(typeof interceptor === 'function')
+                    interceptor(init);
             }
         }
 
