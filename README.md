@@ -54,3 +54,34 @@ import { setTransferHeaders } from 'koa-auto-transfer-header';
 
 setTransferHeaders(['my-header1', 'my-header2']);
 ```
+
+interceptors
+
+```typescript
+import { requestInterceptor } from 'koa-auto-transfer-header';
+
+requestInterceptor.use((request: RequestInit | http.ClientRequest | http2.ClientHttp2Stream | http.ClientRequest;) => {
+	console.log('Do something with request')
+})
+```
+
+use storage
+
+```typescript
+const Koa = require('koa');
+const Router = require('@koa/router');
+const app = new Koa();
+const router = new Router();
+
+app.use(async (ctx, next) => {
+    storage.enable(async () => {
+        storage.setItem('__KEY__', { name: 123 })
+        await next();
+    })
+});
+
+router.get('/', (ctx, next) => {
+    console.log(storage.get('__KEY__')); // console log { name: 123 }
+    ctx.body = "Hello 200";
+})
+```

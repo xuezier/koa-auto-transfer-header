@@ -1,4 +1,8 @@
 import { IConfig } from "./interface/IConfig";
+import * as http from 'http';
+import * as http2 from 'http2';
+
+export type IRequestInterceptor = RequestInit | http.ClientRequest | http2.ClientHttp2Stream | http.ClientRequest;
 
 export const config: IConfig = {
     transferHeaders: [
@@ -9,3 +13,5 @@ export const config: IConfig = {
 
     enable: true,
 };
+
+export const requestInterceptorArr: ((request: IRequestInterceptor) => void)[] = [];

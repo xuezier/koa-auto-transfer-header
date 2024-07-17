@@ -7,7 +7,7 @@ import './http-request';
 import './https-request';
 import './http2-request';
 
-import { config } from './config';
+import { config, requestInterceptorArr, IRequestInterceptor } from './config';
 import assert = require('assert');
 
 export function disableTransferHeaders() {
@@ -24,6 +24,12 @@ export function addTransferHeader(header: string) {
     if(!config.transferHeaders.includes(header))
         config.transferHeaders.push(header);
 }
+
+export const requestInterceptor = {
+    use: (callback: (request: IRequestInterceptor) => void) => {
+        requestInterceptorArr.push(callback);
+    }
+};
 
 export class HeaderTransferHandle {
     static disableTransferHeaders = disableTransferHeaders;

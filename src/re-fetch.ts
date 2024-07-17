@@ -1,4 +1,4 @@
-import { config } from "./config";
+import { config, requestInterceptorArr } from "./config";
 import { storage } from "./storage";
 
 const globalFetch = global.fetch;
@@ -17,6 +17,11 @@ Object.defineProperty(global, 'fetch', {
             }
 
             init.headers = headers;
+
+            for(const interceptor of requestInterceptorArr) {
+                if(interceptor)
+                    await interceptor(init);
+            }
         }
 
         return globalFetch(input, init);

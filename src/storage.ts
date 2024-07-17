@@ -18,5 +18,11 @@ export const storage = {
     },
     set(value: IncomingHttpHeaders) {
         asyncLocalStorage.getStore()?.set(STORAGE_KEY, value);
+    },
+    getItem(key: string) {
+        return asyncLocalStorage.getStore()?.get(Symbol.for(key));
+    },
+    setItem(key: string, value: any) {
+        asyncLocalStorage.getStore()?.set(Symbol.for(key), value);
     }
 };
