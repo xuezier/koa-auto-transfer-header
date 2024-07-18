@@ -54,3 +54,13 @@ import { setTransferHeaders } from 'koa-auto-transfer-header';
 
 setTransferHeaders(['my-header1', 'my-header2']);
 ```
+
+add request headers hook
+
+```typescript
+import { RequestHeadersHook } from 'koa-auto-transfer-header';
+
+RequestHeadersHook.register('x-headers-tag', () => {
+    return { 'x-headers-tag': '123' }
+})
+```
