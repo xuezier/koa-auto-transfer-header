@@ -18,6 +18,10 @@ Object.defineProperty(http2, 'connect', {
 
         Object.defineProperty(session, 'request', {
             value: function(headers: http2.OutgoingHttpHeaders, options?: http2.ClientSessionRequestOptions) {
+                RequestHeadersHook.handle().map(([key, value]) => {
+                    headers[key] = value;
+                });
+
                 config.transferHeaders.map(headerKey => {
                     const value = storage.get(headerKey);
                     if(value) {
@@ -25,10 +29,6 @@ Object.defineProperty(http2, 'connect', {
                         headers[`grpc-metadata-${headerKey}`] = value;
                     }
 
-                });
-
-                RequestHeadersHook.handle().map(([key, value]) => {
-                    headers[key] = value;
                 });
 
                 const req = request.apply(session, [headers, options]);

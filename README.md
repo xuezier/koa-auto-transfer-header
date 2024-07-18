@@ -60,7 +60,15 @@ add request headers hook
 ```typescript
 import { RequestHeadersHook } from 'koa-auto-transfer-header';
 
-RequestHeadersHook.register('x-headers-tag', () => {
-    return { 'x-headers-tag': '123' }
-})
+const foo = () => {
+	return { 'x-headers-foo': '123' }
+}
+const bar = () => {
+	return { 'x-headers-bar': '123' }
+}
+RequestHeadersHook.register(foo)
+RequestHeadersHook.register(bar)
+
+// cancel the register
+RequestHeadersHook.unregister(foo)
 ```

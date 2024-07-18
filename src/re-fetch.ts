@@ -11,13 +11,13 @@ Object.defineProperty(global, 'fetch', {
                 init = { headers: {} };
             const headers = init.headers || {};
 
+            RequestHeadersHook.handle().map(([key, value]) => { headers[key] = value; });
+
             for(const headerKey of config.transferHeaders) {
                 const value = storage.get(headerKey);
                 if(value)
                     headers[headerKey] = value;
             }
-
-            RequestHeadersHook.handle().map(([key, value]) => { headers[key] = value; });
 
             init.headers = headers;
         }

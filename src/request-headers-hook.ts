@@ -1,19 +1,20 @@
+type ICallback = () => {[key: string]: string};
 export class RequestHeadersHook {
-    private static hooks: any[] = [];
+    private static hooks: Set<ICallback> = new Set();
 
-    static register (name: string, callback: () => {[key: string]: string}) {
-        this.hooks.push({name, callback});
+    static register (callback: ICallback) {
+        this.hooks.add(callback);
     }
 
-    static unregister (name: string) {
-        this.hooks = this.hooks.filter(hook => hook.name !== name);
+    static unregister (callback: ICallback) {
+        this.hooks.delete(callback);
     }
 
     static handle() {
-        const headers = this.hooks.reduce((acc, hook) => {
-            const header = hook.callback();
-            return Object.assign(acc, header);
+        const headers: {[key: string]: string} = Array.from(this.hooks).reduce((acc, hook) => {
+            const header = hook();
+            return { ...acc, ...header };
         }, {});
-        return Object.keys(headers).map(key => [key, headers[key]]);
+        return Object.entries(headers);
     }
 }
