@@ -3,6 +3,7 @@ import { Socket } from 'net';
 import { TLSSocket } from 'tls';
 import { config } from './config';
 import { storage } from './storage';
+import { RequestHeadersHook } from './request-headers-hook';
 
 const connect = http2.connect;
 
@@ -17,6 +18,10 @@ Object.defineProperty(http2, 'connect', {
 
         Object.defineProperty(session, 'request', {
             value: function(headers: http2.OutgoingHttpHeaders, options?: http2.ClientSessionRequestOptions) {
+                RequestHeadersHook.handle().map(([key, value]) => {
+                    headers[key] = value;
+                });
+
                 config.transferHeaders.map(headerKey => {
                     const value = storage.get(headerKey);
                     if(value) {
