@@ -1,4 +1,9 @@
-type ICallback = () => {[key: string]: string};
+type ICallback = (require: IRequire) => {[key: string]: string};
+
+type IRequire = {
+    url: string;
+}
+
 export class RequestHeadersHook {
     private static hooks: Set<ICallback> = new Set();
 
@@ -10,9 +15,9 @@ export class RequestHeadersHook {
         this.hooks.delete(callback);
     }
 
-    static handle() {
+    static handle(require: IRequire) {
         const headers: {[key: string]: string} = Array.from(this.hooks).reduce((acc, hook) => {
-            const header = hook();
+            const header = hook(require);
             return { ...acc, ...header };
         }, {});
         return Object.entries(headers);

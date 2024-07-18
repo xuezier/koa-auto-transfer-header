@@ -5,13 +5,19 @@ import { RequestHeadersHook } from './request-headers-hook';
 const globalFetch = global.fetch;
 
 Object.defineProperty(global, 'fetch', {
-    value: async function (input: RequestInfo, init?: RequestInit) {
+    value: async function (input: RequestInfo | URL, init?: RequestInit) {
         if(config.enable) {
             if(!init)
                 init = { headers: {} };
             const headers = init.headers || {};
 
-            RequestHeadersHook.handle().map(([key, value]) => { headers[key] = value; });
+            RequestHeadersHook.handle({
+                url: input instanceof Request ?
+                    input.url :
+                    input instanceof URL ?
+                        input.href :
+                        input,
+            }).map(([key, value]) => { headers[key] = value; });
 
             for(const headerKey of config.transferHeaders) {
                 const value = storage.get(headerKey);
@@ -22,7 +28,7 @@ Object.defineProperty(global, 'fetch', {
             init.headers = headers;
         }
 
-        return globalFetch(input, init);
+        return globalFetch(input as any, init);
     },
     enumerable: true,
     configurable: true,
