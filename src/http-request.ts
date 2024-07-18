@@ -14,7 +14,6 @@ Object.defineProperty(http, 'request', {
             RequestHeadersHook.handle().map(([key, value]) => { client.setHeader(key, value);});
             config.transferHeaders.map(headerKey => {
                 const value = storage.get(headerKey);
-                client.getHeaders();
                 if(value)
                     client.setHeader(headerKey, value);
             });
