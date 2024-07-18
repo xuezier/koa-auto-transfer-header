@@ -7,6 +7,8 @@ import { RequestHeadersHook } from './request-headers-hook';
 
 const connect = http2.connect;
 
+const { HTTP2_HEADER_PATH } = http2.constants;
+
 Object.defineProperty(http2, 'connect', {
     value: function(authority: string | URL, options?, listener?: ((session: http2.ClientHttp2Session, socket: Socket | TLSSocket) => void)) {
         const session = connect(authority, options, listener);
@@ -18,7 +20,9 @@ Object.defineProperty(http2, 'connect', {
 
         Object.defineProperty(session, 'request', {
             value: function(headers: http2.OutgoingHttpHeaders, options?: http2.ClientSessionRequestOptions) {
-                RequestHeadersHook.handle().map(([key, value]) => {
+                RequestHeadersHook.handle({
+                    url: typeof authority === 'string' ? `${authority}${headers[HTTP2_HEADER_PATH] || '/'}` : authority.href
+                }).map(([key, value]) => {
                     headers[key] = value;
                 });
 
