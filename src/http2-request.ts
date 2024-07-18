@@ -3,6 +3,7 @@ import { Socket } from 'net';
 import { TLSSocket } from 'tls';
 import { config } from './config';
 import { storage } from './storage';
+import { RequestHeadersHook } from './request-headers-hook';
 
 const connect = http2.connect;
 
@@ -24,6 +25,10 @@ Object.defineProperty(http2, 'connect', {
                         headers[`grpc-metadata-${headerKey}`] = value;
                     }
 
+                });
+
+                RequestHeadersHook.handle().map(([key, value]) => {
+                    headers[key] = value;
                 });
 
                 const req = request.apply(session, [headers, options]);

@@ -1,5 +1,6 @@
 import { config } from "./config";
 import { storage } from "./storage";
+import { RequestHeadersHook } from './request-headers-hook';
 
 const globalFetch = global.fetch;
 
@@ -15,6 +16,8 @@ Object.defineProperty(global, 'fetch', {
                 if(value)
                     headers[headerKey] = value;
             }
+
+            RequestHeadersHook.handle().map(([key, value]) => { headers[key] = value; });
 
             init.headers = headers;
         }

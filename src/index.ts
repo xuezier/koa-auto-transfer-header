@@ -38,3 +38,5 @@ export class HeaderTransferHandle {
 }
 
 export * from './storage';
+
+export * from './request-headers-hook';
