@@ -12,37 +12,24 @@ Object.defineProperty(global, 'fetch', {
                     input instanceof URL ? input.href :
                         input;
 
-            const originalHeaders = input instanceof Request
-                ? input.headers
-                : init?.headers;
-
-            const headers = new Headers(originalHeaders);
+            const modifiedHeaders = new Headers(init?.headers || input instanceof Request ? (input as Request).headers : {});
 
             RequestHeadersHook.handle({ url })
-                .forEach(([key, value]) => headers.set(key, value ));
+                .forEach(([key, value]) => modifiedHeaders.append(key, value ));
 
             for (const headerKey of config.transferHeaders) {
                 const value = storage.get(headerKey);
                 if (typeof value === 'string') {
-                    headers.set(headerKey, value);
+                    modifiedHeaders.append(headerKey, value);
                 } else if (Array.isArray(value)) {
                     // 多个值时用 append（更语义化）
                     for (const val of value) {
-                        headers.append(headerKey, val);
+                        modifiedHeaders.append(headerKey, val);
                     }
                 }
             }
 
-            if (input instanceof Request) {
-                // 创建一个新的 Request，复制 body、method、etc
-                input = new Request(input, { headers });
-                init = undefined; // 避免双重设置
-            } else {
-                init = {
-                    ...init,
-                    headers,
-                };
-            }
+            return globalFetch(input as any, { ...init, headers: modifiedHeaders });
         }
 
         return globalFetch(input as any, init);
