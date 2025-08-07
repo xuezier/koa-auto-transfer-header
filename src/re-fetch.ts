@@ -6,26 +6,30 @@ const globalFetch = global.fetch;
 
 Object.defineProperty(global, 'fetch', {
     value: async function (input: RequestInfo | URL, init?: RequestInit) {
-        if(config.enable) {
-            if(!init)
-                init = { headers: {} };
-            const headers = init.headers || {};
+        if (config.enable) {
+            const url =
+                input instanceof Request ? input.url :
+                    input instanceof URL ? input.href :
+                        input;
 
-            RequestHeadersHook.handle({
-                url: input instanceof Request ?
-                    input.url :
-                    input instanceof URL ?
-                        input.href :
-                        input,
-            }).map(([key, value]) => { headers[key] = value; });
+            const modifiedHeaders = new Headers(init?.headers || input instanceof Request ? (input as Request).headers : {});
 
-            for(const headerKey of config.transferHeaders) {
+            RequestHeadersHook.handle({ url })
+                .forEach(([key, value]) => modifiedHeaders.append(key, value ));
+
+            for (const headerKey of config.transferHeaders) {
                 const value = storage.get(headerKey);
-                if(value)
-                    headers[headerKey] = value;
+                if (typeof value === 'string') {
+                    modifiedHeaders.append(headerKey, value);
+                } else if (Array.isArray(value)) {
+                    // 多个值时用 append（更语义化）
+                    for (const val of value) {
+                        modifiedHeaders.append(headerKey, val);
+                    }
+                }
             }
 
-            init.headers = headers;
+            return globalFetch(input as any, { ...init, headers: modifiedHeaders });
         }
 
         return globalFetch(input as any, init);
