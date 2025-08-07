@@ -6,26 +6,43 @@ const globalFetch = global.fetch;
 
 Object.defineProperty(global, 'fetch', {
     value: async function (input: RequestInfo | URL, init?: RequestInit) {
-        if(config.enable) {
-            if(!init)
-                init = { headers: {} };
-            const headers = init.headers || {};
+        if (config.enable) {
+            const url =
+                input instanceof Request ? input.url :
+                    input instanceof URL ? input.href :
+                        input;
 
-            RequestHeadersHook.handle({
-                url: input instanceof Request ?
-                    input.url :
-                    input instanceof URL ?
-                        input.href :
-                        input,
-            }).map(([key, value]) => { headers[key] = value; });
+            const originalHeaders = input instanceof Request
+                ? input.headers
+                : init?.headers;
 
-            for(const headerKey of config.transferHeaders) {
+            const headers = new Headers(originalHeaders);
+
+            RequestHeadersHook.handle({ url })
+                .forEach(([key, value]) => headers.set(key, value ));
+
+            for (const headerKey of config.transferHeaders) {
                 const value = storage.get(headerKey);
-                if(value)
-                    headers[headerKey] = value;
+                if (typeof value === 'string') {
+                    headers.set(headerKey, value);
+                } else if (Array.isArray(value)) {
+                    // 多个值时用 append（更语义化）
+                    for (const val of value) {
+                        headers.append(headerKey, val);
+                    }
+                }
             }
 
-            init.headers = headers;
+            if (input instanceof Request) {
+                // 创建一个新的 Request，复制 body、method、etc
+                input = new Request(input, { headers });
+                init = undefined; // 避免双重设置
+            } else {
+                init = {
+                    ...init,
+                    headers,
+                };
+            }
         }
 
         return globalFetch(input as any, init);
