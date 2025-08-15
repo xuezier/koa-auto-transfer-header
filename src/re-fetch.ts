@@ -12,7 +12,9 @@ Object.defineProperty(global, 'fetch', {
                     input instanceof URL ? input.href :
                         input;
 
-            const modifiedHeaders = new Headers(init?.headers || input instanceof Request ? (input as Request).headers : {});
+            const modifiedHeaders = new Headers(init?.headers 
+                || (input instanceof Request ? (input as Request).headers : {})
+            );
 
             RequestHeadersHook.handle({ url })
                 .forEach(([key, value]) => modifiedHeaders.append(key, value ));
